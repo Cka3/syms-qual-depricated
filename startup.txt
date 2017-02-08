@@ -1,0 +1,10 @@
+because fuck ruby
+
+cd E:\Git\syms-qual\
+lein trampoline cljsbuild auto electron-dev
+
+cd E:\Git\syms-qual\
+lein trampoline figwheel frontend-dev
+
+cd E:\Git\syms-qual\
+electron
