@@ -1,6 +1,6 @@
 (ns ui.core
   (:require [reagent.core :as reagent :refer [atom]]
-            [game.core :refer [new-game base-state]]))
+            [game.core :refer [new-game base-state register-state!]]))
 
 (enable-console-print!)
 
@@ -8,6 +8,8 @@
 
 (defn app [] (new-game state))
 
-(reagent/render
-  [app]
-  (js/document.getElementById "app-container"))
+(def root (. js/document (getElementById "app-container")))
+
+(register-state! state root)
+
+(reagent/render [app] root)
