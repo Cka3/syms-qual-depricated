@@ -10,7 +10,8 @@
    :route-66 route-66/data})
 
 (def base-state
-  {:scene [:route-66 :intro]})
+  {:scene [:route-66 :diner]
+   :subscene [0]})
 
 (def -state (atom {}))
 
