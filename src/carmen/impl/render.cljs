@@ -1,22 +1,28 @@
-(ns game.render
+(ns carmen.impl.render
   (:require [clojure.string :as str]))
 
-(def images-path "/img")
-(defn url [s] (str "url(\"" images-path s "\")"))
 (defn px [s] (str s "px"))
 
-(defn substate [key state graph]
-  (key (get-in graph (:scene state))))
+(defn scene-data [state graph]
+  (let [[major minor & _] (:scene state)]
+    (-> (:scenes graph)
+        (major)
+        (minor))))
 
-(def style (partial substate :style))
-(def render-type (partial substate :render-type))
+(defn style [state graph]
+  (:style (scene-data state graph)))
 
-(defn process-ptr [subscene-pointer]
-  subscene-pointer)
+(defn render-type [state graph options]
+  (:render-type (scene-data state graph)))
+
+(defn subscene-ptr [state]
+  (let [[major minor & ptr] (:scene state)]
+    ptr))
 
 (defn subscene [state graph]
-  (-> (substate :subscenes state graph)
-      (get-in (process-ptr (:subscene state)))))
+  (-> (scene-data state graph)
+      (:subscenes)
+      (get-in (subscene-ptr state))))
 
 (defn actors [state graph]
   (as-> (subscene state graph) <>
@@ -42,15 +48,18 @@
 (defn render-characters [characters]
   (into [:div.characters] render-character-xf characters))
 
-(defn render-textbox [{:keys [window] :as state} graph]
-  (let [border-width 3
-        padding 16
-        margin 5
-        padding-sides "20%"
+(def default-options
+  {:border-width 3
+   :padding 16
+   :margin 5
+   :ratio 0.2})
+
+(defn render-textbox [{:keys [window] :as state} graph options]
+  (let [{:keys [border-width padding margin ratio]} (merge default-options options)
         y (:y window)
         x (:x window)
-        height (/ y 5)
-        top (* 4 (/ (:y window) 5))
+        height (* y ratio)
+        top (* (- 1 ratio) (:y window))
         textbox-height (- height (* 2 (+ border-width padding margin)))]
    [:div.textbox
      {:style {:height (px height)
@@ -74,15 +83,12 @@
 (defmulti render render-type)
 
 (defmethod render :default
-  [state-atom graph]
-  (let [{:keys [window] :as state} @state-atom]
-   [:div.base-scene
-     {:style (merge
-              {:height (px (:y window))
-               :width (px (:x window))}
-              (style state graph))}
-    (align-characters (render-characters (actors state graph)))
-    (render-textbox state graph)]))
-
-(defmulti transition identity)
+  [{:keys [window] :as state} graph options]
+  [:div.base-scene
+   {:style (merge
+            {:height (px (:y window))
+             :width (px (:x window))}
+            (style state graph))}
+   (align-characters (render-characters (actors state graph)))
+   (render-textbox state graph options)])
 
