@@ -5,4 +5,4 @@
   {:spawn
    {:style {:background-image (:anubis-spawn bg/data)}
     :subscenes
-    ["Symmetra" [[:roadhog :neutral] [:symmetra :neutral]] "Awwww shit boy."]}})
+    [["Symmetra" [[:roadhog :_neutral] [:symmetra :_neutral]] "Awwww shit boy."]]}})

@@ -3,7 +3,8 @@
 
 (def structure
   {"Symmetra"
-   {"_neutral" {}}
+   {"_neutral" {}
+    "_no" {}}
 
    "Roadhog"
    {"_neutral" {}}

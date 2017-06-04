@@ -5,7 +5,7 @@
   {:diner
    {:style {:background-image (:route-66-diner bg/data)}
     :subscenes
-    [["Symmetra" [[:roadhog :_neutral] [:symmetra :_neutral]] "Ayyy, what up Roadie?"]
+    [["Symmetra" [[:roadhog :_neutral] [:symmetra :_no]] "Ayyy, what up Roadie?"]
      ["Pharah"  [[:pharah :_cold] [:symmetra :_neutral]] "Ayyy, what up bb it's me ur bird gay."]]
     :transition [:anubis :spawn]}
 
