@@ -49,7 +49,10 @@
 (defn reify-minor-scenes-xf [options]
   (map
    (fn [[level-name level-data]]
-     [level-name (update level-data :subscenes reify-subscenes)])))
+     [level-name
+      (case (:render-type level-data)
+        :dialogue (update level-data :subscenes reify-subscenes)
+        level-data)])))
 
 (defn reify-scenes-xf [options]
   (map

@@ -54,14 +54,14 @@
    :margin 5
    :ratio 0.2})
 
-(defn render-textbox [{:keys [window] :as state} graph options]
+(defn render-dialogue-textbox [{:keys [window] :as state} graph options]
   (let [{:keys [border-width padding margin ratio]} (merge default-options options)
         y (:y window)
         x (:x window)
         height (* y ratio)
         top (* (- 1 ratio) (:y window))
         textbox-height (- height (* 2 (+ border-width padding margin)))]
-   [:div.textbox
+    [:div.textbox
      {:style {:height (px height)
               :width (px x)
               :top (px top)}}
@@ -76,13 +76,42 @@
        (str (str/upper-case (speaker state graph)) ":")]
       [:div.textbox-dialogue (dialogue state graph)]]]))
 
+(defn render-textbox [{:keys [window] :as state} graph options]
+  (let [{:keys [border-width padding margin ratio]} (merge default-options options)
+        y (:y window)
+        x (:x window)
+        height (* y ratio)
+        top (* (- 1 ratio) (:y window))
+        textbox-height (- height (* 2 (+ border-width padding margin)))]
+    [:div.textbox
+     {:style {:height (px height)
+              :width (px x)
+              :top (px top)}}
+     [:div.textbox-inner
+      {:style
+       {:border-width (px border-width)
+        :padding-top (px padding)
+        :padding-bottom (px padding)
+        :margin (px margin)
+        :height (px textbox-height)}}
+      [:div.textbox-dialogue (subscene state graph)]]]))
+
 (defmulti align-characters identity)
 
 (defmethod align-characters :default [arg] arg)
 
 (defmulti render render-type)
 
-(defmethod render :default
+(defmethod render :textbox
+  [{:keys [window] :as state} graph options]
+  [:div.base-scene
+   {:style (merge
+            {:height (px (:y window))
+             :width (px (:x window))}
+            (style state graph))}
+   (render-textbox state graph options)])
+
+(defmethod render :dialogue
   [{:keys [window] :as state} graph options]
   [:div.base-scene
    {:style (merge

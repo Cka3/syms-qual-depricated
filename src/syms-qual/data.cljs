@@ -7,4 +7,4 @@
    :scenes scenes/data})
 
 (def base-state
-  {:scene [:route-66 :diner 0]})
+  {:scene [:route-66 :diner-intro 0]})
