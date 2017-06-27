@@ -49,69 +49,85 @@
   (into [:div.characters] render-character-xf characters))
 
 (def default-options
-  {:border-width 3
-   :padding 16
-   :margin 5
-   :ratio 0.2})
+  {:dialogue/border-width 3
+   :dialogue/padding 16
+   :dialogue/margin 5
+   :dialogue/ratio 0.2
 
-(defn render-dialogue-textbox [{:keys [window] :as state} graph options]
-  (let [{:keys [border-width padding margin ratio]} (merge default-options options)
+   :narration/border-width 3
+   :narration/padding 16
+   :narration/margin 5
+   :narration/y-ratio 0.5
+   :narration/x-ratio 0.8})
+
+(defn dialogue-textbox [{:keys [window] :as state} graph options]
+  (let [{border-width :dialogue/border-width
+         padding :dialogue/padding
+         margin :dialogue/margin
+         ratio :dialogue/ratio}
+        (merge default-options options)
         y (:y window)
         x (:x window)
         height (* y ratio)
         top (* (- 1 ratio) (:y window))
         textbox-height (- height (* 2 (+ border-width padding margin)))]
-    [:div.textbox
+    [:div.miranda.dialogue.textbox
      {:style {:height (px height)
               :width (px x)
               :top (px top)}}
-     [:div.textbox-inner
+     [:div.miranda.dialogue.textbox-inner
       {:style
        {:border-width (px border-width)
         :padding-top (px padding)
         :padding-bottom (px padding)
         :margin (px margin)
         :height (px textbox-height)}}
-      [:div.textbox-speaker
+      [:div.miranda.dialogue.textbox-speaker
        (str (str/upper-case (speaker state graph)) ":")]
-      [:div.textbox-dialogue (dialogue state graph)]]]))
+      [:div.miranda.dialogue.text (dialogue state graph)]]]))
 
-(defn render-textbox [{:keys [window] :as state} graph options]
-  (let [{:keys [border-width padding margin ratio]} (merge default-options options)
+(defn narration-textbox [{:keys [window] :as state} graph options]
+  (let [{border-width :narration/border-width
+         padding :narration/padding
+         margin :narration/margin
+         y-ratio :narration/y-ratio
+         x-ratio :narration/x-ratio}
+        (merge default-options options)
         y (:y window)
         x (:x window)
-        height (* y ratio)
-        top (* (- 1 ratio) (:y window))
+        height (* y y-ratio)
+        width (* x x-ratio)
+        left (* (- 1 x-ratio) x (/ 1 2))
+        top (* (- 1 y-ratio) y (/ 1 2))
         textbox-height (- height (* 2 (+ border-width padding margin)))]
-    [:div.textbox
+    [:div.miranda.narration.textbox
      {:style {:height (px height)
-              :width (px x)
-              :top (px top)}}
-     [:div.textbox-inner
+              :width (px width)
+              :top (px top)
+              :left (px left)}}
+     [:div.miranda.narration.textbox-inner
       {:style
        {:border-width (px border-width)
         :padding-top (px padding)
         :padding-bottom (px padding)
         :margin (px margin)
         :height (px textbox-height)}}
-      [:div.textbox-dialogue (subscene state graph)]]]))
+      [:div.narration.miranda.text (subscene state graph)]]]))
 
 (defmulti align-characters identity)
 
 (defmethod align-characters :default [arg] arg)
 
-(defmulti render render-type)
-
-(defmethod render :textbox
+(defn render-narration
   [{:keys [window] :as state} graph options]
   [:div.base-scene
    {:style (merge
             {:height (px (:y window))
              :width (px (:x window))}
             (style state graph))}
-   (render-textbox state graph options)])
+   (narration-textbox state graph options)])
 
-(defmethod render :dialogue
+(defn render-dialogue
   [{:keys [window] :as state} graph options]
   [:div.base-scene
    {:style (merge
@@ -119,5 +135,5 @@
              :width (px (:x window))}
             (style state graph))}
    (align-characters (render-characters (actors state graph)))
-   (render-textbox state graph options)])
+   (dialogue-textbox state graph options)])
 

@@ -54,6 +54,10 @@ body{
     margin-right: 20px;
 }
 
-.textbox.dialogue{
-    
+.narration.text{
+    text-align: center;
+}
+
+.narration.textbox-inner{
+    align-items: center;
 }

@@ -1,5 +1,5 @@
 (ns carmen.miranda
-  (:require [carmen.impl.render :as render :refer [render]]))
+  (:require [carmen.impl.render :as render]))
 
 (def -state (atom {}))
 
@@ -21,6 +21,16 @@
       (= k :interval) (js/window.clearInterval v)
       :default (js/window.removeEventListener k v))))
 
+(defmulti render render/render-type)
+
+(defmethod render :miranda/narration
+  [state graph options]
+  (render/render-narration state graph options))
+
+(defmethod render :miranda/dialogue
+  [state graph options]
+  (render/render-dialogue state graph options))
+
 (defn render-game-inner [state-atom graph options]
   [render @state-atom graph options])
 
@@ -32,9 +42,14 @@
   (fn render-game []
     [render-game-inner state-atom graph options]))
 
-(defn transition-event [state-atom]
+(defn transition-event [state-atom graph]
   (fn []
     (swap!
      state-atom
      (fn [state]
-       (update-in state [:scene 2] inc)))))
+       (let [[_ _ n] (:scene state)
+             scene (render/scene-data state graph)
+             subscene-count (count (:subscenes scene))]
+         (if (>= n (dec subscene-count))
+           (assoc state :scene (:transition scene))
+           (update-in state [:scene 2] inc)))))))

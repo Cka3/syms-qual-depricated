@@ -51,7 +51,7 @@
    (fn [[level-name level-data]]
      [level-name
       (case (:render-type level-data)
-        :dialogue (update level-data :subscenes reify-subscenes)
+        :miranda/dialogue (update level-data :subscenes reify-subscenes)
         level-data)])))
 
 (defn reify-scenes-xf [options]
