@@ -2,14 +2,26 @@
   (:require [carmen.data :as data]))
 
 (def structure
-  ["route_66_diner"
-   "route_66_street"
-
-   "anubis_cafe"
+  ["anubis_cafe"
    "anubis_flashback"
    "anubis_spawn"
+   "AnubisGenji"
+   "AnubisPharah"
+   "AnubisPharahB"
+   "AnubisZarya"
 
-   "volskaya_spawn"])
+   "hollywood_objective"
+   "hollywood_set"
+   "hollywood_theatre"
+
+   "route_66_diner"
+   "route_66_street"
+   "route66Ana"
+   "route66Hog"
+   "route66Reaper"
+
+   "volskaya_spawn"
+   "VolskayaZenyatta"])
 
 (def options
   {:path "img/Backgrounds/"
