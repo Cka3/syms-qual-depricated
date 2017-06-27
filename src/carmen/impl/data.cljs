@@ -7,11 +7,19 @@
 
 ;; --- Character Functions ---
 
+(defn reify-character-subexpr-xf [css-data]
+  (map
+   (fn [[subexpr subdata]]
+     [(keyword subexpr) (merge subdata css-data)])))
+
 (defn reify-character-xf [name path ext]
   (map
    (fn [[expression data]]
-     [(keyword expression)
-      (merge data {:img (url (str path name "/" expression "." ext))})])))
+     (let [css-data {:img (url (str path name "/" expression "." ext))}]
+       [(keyword expression)
+        (if-not (empty? data)
+          (into {} (reify-character-subexpr-xf css-data) data)
+          (merge data css-data))]))))
 
 (defn reify-characters-xf [{:keys [path ext]}]
   (map

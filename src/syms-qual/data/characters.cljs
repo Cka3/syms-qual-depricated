@@ -1,14 +1,19 @@
 (ns syms-qual.data.characters
   (:require [carmen.data :as data]))
 
+;; TODO: This should just be on a higher part of the graph
+(def alignments
+  {:behind {:alignment [-20 0]}
+   0 {}})
+
 (def structure
   {"Ana"
-   {"_cranky" {}
+   {"_cranky" alignments
     "_drink" {}
     "_explain" {}
     "_phone" {}
     "_rolls-eyes" {}
-    "_sass" {}}
+    "_sass" alignments}
 
    "Efi"
    {"_armsUpExcited" {}
@@ -107,7 +112,7 @@
     "_explainEmbarassed" {}
     "_flying" {}
     "_frown" {}
-    "_geez" {:alignment [0 0]}
+    "_geez" {}
     "_helloAwkward" {}
     "_helloNeutral" {}
     "_helmetNervous" {}

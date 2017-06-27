@@ -2,6 +2,7 @@
   (:require [clojure.string :as str]))
 
 (defn px [s] (str s "px"))
+(defn pct [s] (str s "%"))
 
 (defn scene-data [state graph]
   (let [[major minor & _] (:scene state)]
@@ -42,8 +43,8 @@
        [:div.character
         {:style
          {:background-image img
-          :left (px x)
-          :top (px y)}}]))))
+          :left (pct x)
+          :top (pct y)}}]))))
 
 (defn render-characters [characters]
   (into [:div.characters] render-character-xf characters))
