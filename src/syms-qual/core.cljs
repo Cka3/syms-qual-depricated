@@ -5,7 +5,7 @@
 
 (enable-console-print!)
 
-(def state-atom (atom base-state))
+(defonce state-atom (atom base-state))
 
 (def app (miranda/samba state-atom graph {}))
 

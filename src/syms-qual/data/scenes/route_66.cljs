@@ -13,7 +13,9 @@
    {:style {:background-image (:route-66-diner bg/data)}
     :render-type :miranda/dialogue
     :subscenes
-    [["McCree"  [[:ana :_sass] [:mcree :_coffeePoint] [:symmetra :_neutral]]
+    [["McCree"  [[:mccree :_coffeePoint]
+                 [:ana :_sass]
+                 [:symmetra :_neutral]]
       "Howdy! You’re that Symmetra gal joining Overwatch from the Vishkar corporation, aren’tcha? What sort of interest could y’all have with Overwatch?"]]
     :transition [:anubis :spawn 0]}
 
